@@ -15,6 +15,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pylint
+        pylint --rcfile=.pylintrc ./github/workflows/
     - name: Analysing the code with pylint
       run: |
         pylint --disable=C0321 $(git ls-files '*.py')
