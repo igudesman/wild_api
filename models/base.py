@@ -20,7 +20,11 @@ class BaseStatistics:
         self.path = None
 
     @retry(max_retries=2)
-    async def make_request(self, timeout=3.0, **kwargs) -> Tuple[Union[None, Dict[str, Union[List, str]]], str]:
+    async def make_request(
+            self,
+            timeout=3.0,
+            **kwargs
+    ) -> Tuple[Union[None, Dict[str, Union[List, str]]], str]:
         kwargs['key'] = credentials['key']
         full_url = urllib.parse.urljoin(self.base_url, self.path)
 

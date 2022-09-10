@@ -1,3 +1,6 @@
+# pylint: disable=invalid-name
+
+
 from dataclasses import dataclass
 from typing import Iterable
 

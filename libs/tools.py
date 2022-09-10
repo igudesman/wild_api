@@ -6,7 +6,7 @@ def retry(max_retries: int = 3) -> Callable:
     def decorator_retry(func: Callable) -> Callable:
         async def wrapper(*args, **kwargs) -> Callable:
             current_tries = 0
-            response, message_error = None, ''
+            response, error_message = None, ''
             while current_tries < max_retries and response is None:
                 current_tries += 1
                 response, error_message = await func(*args, **kwargs)
