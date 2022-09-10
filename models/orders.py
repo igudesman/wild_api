@@ -1,4 +1,4 @@
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name, too-many-instance-attributes
 
 
 from dataclasses import dataclass
@@ -33,7 +33,7 @@ class Orders(BaseDataclass):
 
 class OrdersStatistics(BaseStatistics):
     def __init__(self) -> None:
-        super(OrdersStatistics, self).__init__()
+        super().__init__()
         self.path = '/api/v1/supplier/orders'
 
     def parse_response(self, json_response, *args, **kwargs) -> Iterable[Orders]:

@@ -1,13 +1,12 @@
-from config import credentials
-from libs.tools import retry
-
 import urllib.parse
 from typing import Dict, List, Union, Iterable, Tuple
 
+import asyncio
 import aiohttp
 from aiohttp.client_exceptions import ClientResponseError
-import asyncio
 
+from config import credentials
+from libs.tools import retry
 
 class BaseDataclass:
     def __init__(self):
@@ -34,13 +33,13 @@ class BaseStatistics:
                 response = await session.get(url=full_url, params=kwargs)
                 response.raise_for_status()
                 return await response.json(), ''
-            except ClientResponseError as e:
-                if e.status == 429:
-                    error_message = e.message
+            except ClientResponseError as err:
+                if err.status == 429:
+                    error_message = err.message
                     await asyncio.sleep(timeout)
             finally:
                 await session.close()
             return None, error_message
 
-    def parse_response(self, *args, **kwargs) -> Iterable[BaseDataclass]:
+    def parse_response(self, json_response, *args, **kwargs) -> Iterable[BaseDataclass]:
         pass

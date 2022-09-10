@@ -23,8 +23,8 @@ async def get_stocks(message: types.Message):
         for stock_item in stocks_stats.parse_response(stocks_response):
             await message.reply(str(stock_item))
             break
-    except RequestError as e:
-        await message.reply(e.message)
+    except RequestError as err:
+        await message.reply(err.message)
 
 
 @dp.message_handler(Text(equals='Get orders'))
@@ -35,8 +35,8 @@ async def get_orders(message: types.Message):
         for order_item in orders_stats.parse_response(orders_response):
             await message.reply(str(order_item))
             break
-    except RequestError as e:
-        await message.reply(e.message)
+    except RequestError as err:
+        await message.reply(err.message)
 
 
 @dp.message_handler(commands=['start'])
