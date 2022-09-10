@@ -19,7 +19,7 @@ dp = Dispatcher(bot)
 async def get_stocks(message: types.Message):
     stocks_stats = StocksStatistics()
     try:
-        stocks_response = await stocks_stats.make_request(dateFrom='2022-09-09')
+        stocks_response = await stocks_stats.make_request(dateFrom='2022-09-10')
         for stock_item in stocks_stats.parse_response(stocks_response):
             await message.reply(str(stock_item))
             break
@@ -46,4 +46,3 @@ async def process_start_command(message: types.Message):
 
 if __name__ == '__main__':
     executor.start_polling(dp)
-
