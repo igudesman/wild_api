@@ -3,12 +3,12 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.utils import executor
 
+from keyboards import keyboard
+
 from config import credentials
 from models.stocks import StocksStatistics
 from models.orders import OrdersStatistics
 from libs.exceptions import RequestError
-
-from keyboards import keyboard
 
 
 bot = Bot(token=credentials['bot_token'])

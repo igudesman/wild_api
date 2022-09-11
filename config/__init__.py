@@ -5,7 +5,8 @@ credentials = {
     'auth': os.getenv('AUTH'),
     'key': os.getenv('KEY'),
     'bot_token': os.getenv('BOT_TOKEN'),
-    'spreadsheet_url': 'https://docs.google.com/spreadsheets/d/1ik4yadseIoMLFOWKpmxwdFfUxcos2hW0BF9WOnUQmhw',
+    'spreadsheet_url':
+        'https://docs.google.com/spreadsheets/d/1ik4yadseIoMLFOWKpmxwdFfUxcos2hW0BF9WOnUQmhw',
 }
 
 

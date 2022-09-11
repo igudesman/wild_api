@@ -1,3 +1,6 @@
+# pylint: disable=invalid-name, too-many-instance-attributes
+
+
 from dataclasses import dataclass
 
 from models.base import BaseDataclass

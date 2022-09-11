@@ -1,5 +1,7 @@
+# pylint: too-many-locals
+
+
 import datetime
-import pprint
 from collections import defaultdict
 
 import asyncio
@@ -37,14 +39,14 @@ async def cron_update():
     except RequestError as err:
         print('Orders: ', err.message)
 
-    gc, spread, work, current_week_range = setup()
+    gconfig = setup()
     for key, data in items_data.items():
         print(data)
         await asyncio.sleep(1)
         add_item_data(
-            worksheet=work,
+            worksheet=gconfig['worksheet'],
             name=data.subject + f' ({key[1]})',
-            day_range_index=current_week_range.index(current_date),
+            day_range_index=gconfig['current_week_range'].index(current_date),
             orders=data.orders,
             stocks=data.quantity,
             warehouse=key[1]
