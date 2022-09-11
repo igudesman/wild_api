@@ -26,7 +26,6 @@ class BaseStatistics:
     ) -> Tuple[Union[None, Dict[str, Union[List, str]]], str]:
         kwargs['key'] = credentials['key']
         full_url = urllib.parse.urljoin(self.base_url, self.path)
-
         async with aiohttp.ClientSession(headers={'Authorization': credentials['auth']}) as session:
             error_message = None
             try:
