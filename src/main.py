@@ -8,7 +8,7 @@ import asyncio
 
 from writer.gtables_api import add_item_data, setup
 from models.stocks import StocksStatistics
-from models.orders import OrdersStatistics
+from models.sales import SalesStatistics
 from models.displaying_item import DisplayingItem
 from libs.exceptions import RequestError
 
@@ -30,12 +30,13 @@ async def cron_update():
     except RequestError as err:
         print('Stocks: ', err.message)
 
-    orders_stats = OrdersStatistics()
+    sales_stats = SalesStatistics()
     try:
-        orders_response = await orders_stats.make_request(dateFrom=current_date)
-        for order_item in orders_stats.parse_response(orders_response):
-            item = items_data[(order_item.nmId, order_item.warehouseName)]
-            item.orders += 1
+        sales_response = await sales_stats.make_request(dateFrom=current_date)
+        for sale_item in sales_stats.parse_response(sales_response):
+            item = items_data[(sale_item.nmId, sale_item.warehouseName)]
+            if sale_item.saleID.startswith('S'):
+                item.orders += 1
     except RequestError as err:
         print('Orders: ', err.message)
 
