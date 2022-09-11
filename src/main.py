@@ -1,48 +1,55 @@
-from aiogram import Bot, types
-from aiogram.dispatcher import Dispatcher
-from aiogram.dispatcher.filters import Text
-from aiogram.utils import executor
+import datetime
+import pprint
+from collections import defaultdict
 
-from config import credentials
+import asyncio
+
+from writer.gtables_api import add_item_data, setup
 from models.stocks import StocksStatistics
 from models.orders import OrdersStatistics
+from models.displaying_item import DisplayingItem
 from libs.exceptions import RequestError
 
-from keyboards import keyboard
 
+async def cron_update():
+    current_date = datetime.date.today().strftime('%Y-%m-%d')
 
-bot = Bot(token=credentials['bot_token'])
-dp = Dispatcher(bot)
+    items_data = defaultdict(DisplayingItem)
 
-
-@dp.message_handler(Text(equals='Get stocks'))
-async def get_stocks(message: types.Message):
     stocks_stats = StocksStatistics()
     try:
-        stocks_response = await stocks_stats.make_request(dateFrom='2022-09-10')
+        stocks_response = await stocks_stats.make_request(dateFrom=current_date)
         for stock_item in stocks_stats.parse_response(stocks_response):
-            await message.reply(str(stock_item))
-            break
+            item = items_data[(stock_item.nmId, stock_item.warehouseName)]
+            item.nmId = stock_item.nmId
+            item.subject = stock_item.subject
+            item.quantity = stock_item.quantity
+            item.warehouseName = stock_item.warehouseName
     except RequestError as err:
-        await message.reply(err.message)
+        print('Stocks: ', err.message)
 
-
-@dp.message_handler(Text(equals='Get orders'))
-async def get_orders(message: types.Message):
     orders_stats = OrdersStatistics()
     try:
-        orders_response = await orders_stats.make_request(dateFrom='2022-09-09')
+        orders_response = await orders_stats.make_request(dateFrom=current_date)
         for order_item in orders_stats.parse_response(orders_response):
-            await message.reply(str(order_item))
-            break
+            item = items_data[(order_item.nmId, order_item.warehouseName)]
+            item.orders += 1
     except RequestError as err:
-        await message.reply(err.message)
+        print('Orders: ', err.message)
 
-
-@dp.message_handler(commands=['start'])
-async def process_start_command(message: types.Message):
-    await message.reply('Hello!', reply_markup=keyboard)
+    gc, spread, work, current_week_range = setup()
+    for key, data in items_data.items():
+        print(data)
+        await asyncio.sleep(1)
+        add_item_data(
+            worksheet=work,
+            name=data.subject + f' ({key[1]})',
+            day_range_index=current_week_range.index(current_date),
+            orders=data.orders,
+            stocks=data.quantity,
+            warehouse=key[1]
+        )
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp)
+    asyncio.run(cron_update())

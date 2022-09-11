@@ -1,3 +1,5 @@
+import datetime
+
 from typing import Callable
 from libs.exceptions import RequestError
 
@@ -16,3 +18,11 @@ def retry(max_retries: int = 3) -> Callable:
         return wrapper
 
     return decorator_retry
+
+
+def get_current_week_range() -> str:
+    today = datetime.date.today()
+    year, week_num, day_of_week = today.isocalendar()
+    week_from_day = today - datetime.timedelta(days=day_of_week - 1)
+    for i in range(7):
+        yield (week_from_day + datetime.timedelta(days=i)).strftime('%Y-%m-%d')
