@@ -1,4 +1,4 @@
-# pylint: too-many-locals
+# pylint: disable=too-many-locals
 
 
 import datetime

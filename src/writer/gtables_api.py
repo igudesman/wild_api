@@ -32,6 +32,7 @@ def get_matching_cell_address(
     cell = worksheet.find(query=query, **kwargs)
     if cell is not None:
         return int(cell.row), int(cell.col)
+    return cell
 
 
 def add_item_template(worksheet: Worksheet, name: str, week_range: List[str]) -> Tuple[int, int]:
