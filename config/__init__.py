@@ -15,4 +15,5 @@ class Column(Enum):
     NAME: int = 2
     WAREHOUSE: int = 3
     ORDERS: int = 4
-    STOCKS: int = 5
+    SALES: int = 5
+    STOCKS: int = 6

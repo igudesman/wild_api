@@ -10,6 +10,7 @@ from models.base import BaseDataclass
 class DisplayingItem(BaseDataclass):
     warehouseName: str = ''
     quantity: str = 0
-    name: str = ''
-    barcode: str = ''
+    subject: str = ''
+    supplierArticle: str = ''
+    orders: int = 0
     sales: int = 0
